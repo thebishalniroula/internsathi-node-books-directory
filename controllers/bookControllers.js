@@ -17,14 +17,12 @@ const getBooks = async (req, res) => {
 //register new book
 const addNewBook = async (req, res) => {
   const { value, err } = validateNewBook(req.body);
-
   if (err) {
     return res.status(400).json({
       success: false,
       message: err.details[0],
     });
   }
-
   const book = new Book(req.body);
 
   try {

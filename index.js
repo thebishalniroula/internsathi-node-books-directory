@@ -8,7 +8,7 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 app.use(express.json());
-
+app.use(express.static("public"));
 //connect to databate
 require("./config/dbConnection")();
 
