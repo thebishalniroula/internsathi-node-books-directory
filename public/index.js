@@ -5,6 +5,7 @@ const description = document.getElementById("description");
 const publishYear = document.getElementById("publishYear");
 const msg = document.getElementById("message");
 const showAll = document.getElementById("showall");
+const pre = document.getElementById("json");
 
 addBtn.onclick = (e) => {
   e.preventDefault();
@@ -72,7 +73,39 @@ async function showAllBooks() {
   });
   if (res.ok) {
     const data = await res.json();
-    const pre = document.getElementById("json");
-    pre.innerText = JSON.stringify(data.data, undefined, 2);
+    pre.innerHTML = "";
+    pre.classList.add("json");
+    data.data.forEach((item) => {
+      const div = document.createElement("div");
+      div.classList.add("details");
+      const title = document.createElement("h4");
+      title.innerText = `${item.title} (${item.publishYear})`;
+      const authors = document.createElement("span");
+      authors.innerText = item.authors.join(", ");
+      const description = document.createElement("div");
+      description.innerText = item.description;
+      div.appendChild(title);
+      div.appendChild(authors);
+      div.appendChild(description);
+      pre.appendChild(div);
+      const button = document.createElement("button");
+      button.innerText = "Delete";
+      button.classList.add("delete");
+      button.onclick = () => delete_(item._id);
+      div.appendChild(button);
+    });
+  }
+}
+
+async function delete_(id) {
+  const res = await fetch("/api/book", {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ id }),
+  });
+  if (res.ok) {
+    showAllBooks();
   }
 }

@@ -1,11 +1,10 @@
 const Book = require("../Models/Book");
-const Books = require("../Models/Book");
 const { validateNewBook } = require("../validators/book");
 
 //get a list of all the books
 const getBooks = async (req, res) => {
   try {
-    const books = await Books.find();
+    const books = await Book.find();
     return res.status(200).json({ success: true, data: books });
   } catch (error) {
     return res
@@ -35,7 +34,15 @@ const addNewBook = async (req, res) => {
   }
 };
 
+const deleteBook = async (req, res) => {
+  const deletedBook = await Book.findByIdAndDelete(req.body.id);
+  if (deletedBook) {
+    return res.status(200).json({ success: true, data: deleteBook });
+  }
+  res.status(404).json({ success: false, message: "Data not found." });
+};
 module.exports = {
   getBooks,
   addNewBook,
+  deleteBook,
 };
