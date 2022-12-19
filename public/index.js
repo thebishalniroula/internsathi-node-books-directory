@@ -75,7 +75,8 @@ async function showAllBooks() {
     const data = await res.json();
     pre.innerHTML = "";
     pre.classList.add("json");
-    data.data.forEach((item) => {
+
+    data.data.reverse().forEach((item) => {
       const div = document.createElement("div");
       div.classList.add("details");
       const title = document.createElement("h4");
